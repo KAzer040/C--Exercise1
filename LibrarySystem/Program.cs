@@ -111,7 +111,7 @@ internal class Program
         {
             LibraryManager library = new();
 
-            library.AddItem(new Novels(1, ""A Tale of Two Cities", "Charles Dickens"));
+            library.AddItem(new Novels(1, "A Tale of Two Cities", "Charles Dickens"));
             library.AddItem(new Magazine(2, "SCIENCE", 42));
             library.AddItem(new TextBook(3, "Biology", "Culture"));
 
@@ -134,4 +134,5 @@ internal class Program
             Console.WriteLine(alice.BorrowItem(item4));
         }
     }
+
 
