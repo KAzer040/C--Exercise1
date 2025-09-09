@@ -36,16 +36,16 @@ public class Novels : LibraryItem
 
 public class Magazine : LibraryItem
 {
-    private string issuenumber;
-    public string IssueNumberr => issuenumber;
+    private readonly int issueNumber;   
+    public int IssueNumber => issueNumber;
 
-    public Magazine(int id, string title, string issuenumber) : base(id, title, ItemType.Novels)
-    {
-        this.issuenumber = issuenumber;
-    }
-    public override string GetDetails() => $"Magazine: {Title}, IssueNumber: {issuenumber}";
+    public Magazine(int id, string title, int issueNumber)  
+        : base(id, title, ItemType.Magazine)
+        => this.issueNumber = issueNumber;
+
+    public override string GetDetails()
+        => $"Magazine: {Title}, Issue Number: {IssueNumber}";
 }
-
 public class TextBook : LibraryItem
 {
     private string publisher;
@@ -63,8 +63,11 @@ public class Member
     private string name;
     private List<LibraryItem> borrowedItems = new();
 
+    public Member(string name)
+    {
+        this.name = name;
+    }
     public string Name => name;
-
     public string BorrowItem(LibraryItem item)
     {
         if (borrowedItems.Count >= 3)
@@ -83,3 +86,51 @@ public class Member
     }
     public List<LibraryItem> GetBorrowedItems() => borrowedItems;
 }
+
+public class LibraryManager
+    {
+        private List<LibraryItem> catalog = new();
+        private List<Member> members = new();
+
+        public void AddItem(LibraryItem item) => catalog.Add(item);
+        public void RegisterMember(Member member) => members.Add(member);
+
+        public void ShowCatalog()
+        {
+            Console.WriteLine("Library Catalog:");
+            catalog.ForEach(i => Console.WriteLine(i.GetDetails()));
+        }
+
+        public LibraryItem? FindItemById(int id) => catalog.Find(i => i.Id == id);
+        public Member? FindMemberByName(string name) => members.Find(m => m.Name == name);
+    }
+
+internal class Program
+    {
+        static void Main()
+        {
+            LibraryManager library = new();
+
+            library.AddItem(new Novels(1, "1984", "George Orwell"));
+            library.AddItem(new Magazine(2, "Time", 42));
+            library.AddItem(new TextBook(3, "Physics 101", "Pearson"));
+
+            Member alice = new("Alice");
+            Member bob = new("Bob");
+            library.RegisterMember(alice);
+            library.RegisterMember(bob);
+
+            library.ShowCatalog();
+
+            for (int id = 1; id <= 3; id++)
+            {
+                var item = library.FindItemById(id);
+                if (item != null) Console.WriteLine(alice.BorrowItem(item));
+            }
+
+            var newNovel = new Novels(4, "Animal Farm", "George Orwell");
+            library.AddItem(newNovel);
+            var item4 = library.FindItemById(4);
+            Console.WriteLine(alice.BorrowItem(item4));
+        }
+    }
