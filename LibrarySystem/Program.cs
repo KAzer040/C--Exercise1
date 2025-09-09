@@ -111,9 +111,9 @@ internal class Program
         {
             LibraryManager library = new();
 
-            library.AddItem(new Novels(1, "1984", "George Orwell"));
-            library.AddItem(new Magazine(2, "Time", 42));
-            library.AddItem(new TextBook(3, "Physics 101", "Pearson"));
+            library.AddItem(new Novels(1, ""A Tale of Two Cities", "Charles Dickens"));
+            library.AddItem(new Magazine(2, "SCIENCE", 42));
+            library.AddItem(new TextBook(3, "Biology", "Culture"));
 
             Member alice = new("Alice");
             Member bob = new("Bob");
@@ -128,9 +128,10 @@ internal class Program
                 if (item != null) Console.WriteLine(alice.BorrowItem(item));
             }
 
-            var newNovel = new Novels(4, "Animal Farm", "George Orwell");
+            var newNovel = new Novels(4, "The Million Pound Note", "Mark Twain");
             library.AddItem(newNovel);
             var item4 = library.FindItemById(4);
             Console.WriteLine(alice.BorrowItem(item4));
         }
     }
+
